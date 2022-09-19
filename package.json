@@ -1,0 +1,29 @@
+{
+  "name": "react-as-prop",
+  "packageManager": "yarn@3.2.3",
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@types/jest": "^29.0.3",
+    "@types/react": "^18.0.20",
+    "@types/react-dom": "^18.0.6",
+    "jest-environment-jsdom": "^29.0.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^4.8.3"
+  },
+  "peerDependencies": {
+    "react": "*"
+  },
+  "dependencies": {
+    "jest": "^29.0.3",
+    "ts-jest": "^29.0.1"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "jsdom",
+    "testMatch": [
+      "<rootDir>/src/**/*.spec.{ts,tsx}"
+    ]
+  }
+}

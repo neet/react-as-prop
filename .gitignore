@@ -102,3 +102,18 @@ dist
 
 # TernJS port file
 .tern-port
+
+### modified
+
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
+data
+!.keep
+.DS_Store
+storybook-static
