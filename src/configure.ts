@@ -1,13 +1,36 @@
-import {
+import type {
   ElementType,
-  forwardRef,
   ForwardRefRenderFunction,
   FunctionComponent,
 } from "react";
-import { OverriddenComponentType } from "./OverrideProps";
+import { forwardRef } from "react";
+import type { OverridableComponentType } from "./types";
 
-export const configure = <K extends string>(propName: K) => {
-  const withOverride = <
+export type OverridableFn<K extends string> = <
+  D extends ElementType,
+  P extends { [propName in K]: ElementType }
+>(
+  component: FunctionComponent<P>,
+  fallback: D
+) => OverridableComponentType<D, P, K>;
+
+export type OverridableWithRefFn<K extends string> = <
+  D extends ElementType,
+  P extends { [propName in K]: ElementType }
+>(
+  forwardRefRenderFunction: ForwardRefRenderFunction<unknown, P>,
+  fallback: D
+) => OverridableComponentType<D, P, K>;
+
+export type ConfigureResult<K extends string> = {
+  overridable: OverridableFn<K>;
+  overridableWithRef: OverridableWithRefFn<K>;
+};
+
+export const configure = <K extends string>(
+  propName: K
+): ConfigureResult<K> => {
+  const overridable: OverridableFn<K> = <
     D extends ElementType,
     P extends { [propName in K]: ElementType }
   >(
@@ -16,10 +39,10 @@ export const configure = <K extends string>(propName: K) => {
   ) => {
     return function Overridable(props: P) {
       return component({ [propName]: fallback, ...props });
-    } as OverriddenComponentType<D, P, K>;
+    } as OverridableComponentType<D, P, K>;
   };
 
-  const forwardRefWithOverride = <
+  const overridableWithRef: OverridableWithRefFn<K> = <
     D extends ElementType,
     P extends { [propName in K]: ElementType }
   >(
@@ -29,8 +52,8 @@ export const configure = <K extends string>(propName: K) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return forwardRef<any, any>(function ForwardRefWithOverride(props, ref) {
       return forwardRefRenderFunction({ [propName]: fallback, ...props }, ref);
-    }) as OverriddenComponentType<D, P, K>;
+    }) as OverridableComponentType<D, P, K>;
   };
 
-  return { forwardRefWithOverride, withOverride };
+  return { overridable, overridableWithRef };
 };

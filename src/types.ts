@@ -12,11 +12,11 @@ import {
  * `as` and other IntrinsicElements. Inspired by OverrideProps from Material UI
  */
 // prettier-ignore
-export type OverrideProps<T extends ElementType, P, K extends string> =
+export type OverrideProps<T extends ElementType, P, K extends string> = (
   & { [key in K]: T }
   & Omit<ComponentPropsWithoutRef<T>, keyof RefAttributes<T>>
   & P
-  ;
+);
 
 /**
  * OverrideProps with { ref?: Element }. By casting forwardRef() to this type enables `ref` prop
@@ -33,7 +33,7 @@ export type OverridePropsWithRef<
  * @params U Props Types
  * @params K Prop name used for `as`
  */
-export type OverriddenComponentType<
+export type OverridableComponentType<
   D extends ElementType,
   P,
   K extends string

@@ -6,7 +6,7 @@ import {
   ReactNode,
 } from "react";
 import { render, screen } from "@testing-library/react";
-import { withOverride, forwardRefWithOverride } from ".";
+import { overridable, overridableWithRef } from ".";
 
 /*----------------*/
 
@@ -54,8 +54,8 @@ const PinkButton: FC<PinkButtonProps> = (props) => {
 /*----------------*/
 
 describe("configure", () => {
-  test("withOverride", () => {
-    const Button = withOverride(ButtonPure, "button");
+  test("overridable", () => {
+    const Button = overridable(ButtonPure, "button");
     const fn = jest.fn();
 
     render(
@@ -70,7 +70,7 @@ describe("configure", () => {
   });
 
   test("override with another component", () => {
-    const Button = withOverride(ButtonPure, "button");
+    const Button = overridable(ButtonPure, "button");
 
     const fn = jest.fn();
 
@@ -85,8 +85,8 @@ describe("configure", () => {
     expect(fn).toBeCalled();
   });
 
-  test("forwardRefWithOverride", () => {
-    const Button = forwardRefWithOverride(ButtonPure, "button");
+  test("overridableWithRef", () => {
+    const Button = overridableWithRef(ButtonPure, "button");
     const fn = jest.fn();
     const ref = createRef<HTMLAnchorElement>();
 

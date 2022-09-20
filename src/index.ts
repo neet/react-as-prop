@@ -1,7 +1,7 @@
 import { configure } from "./configure";
 
 export * from "./configure";
-export * from "./OverrideProps";
+export * from "./types";
 
-const { withOverride, forwardRefWithOverride } = configure("as");
-export { withOverride, forwardRefWithOverride };
+const { overridable, overridableWithRef } = configure("as");
+export { overridable, overridableWithRef };
