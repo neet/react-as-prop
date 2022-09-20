@@ -6,9 +6,7 @@ import {
   ReactNode,
 } from "react";
 import { render, screen } from "@testing-library/react";
-import { configure } from "./configure";
-
-const { withOverride, forwardRefWithOverride } = configure("as" as const);
+import { withOverride, forwardRefWithOverride } from ".";
 
 /*----------------*/
 
@@ -18,7 +16,7 @@ interface ButtonProps {
   children?: ReactNode;
 }
 
-const ButtonPure: ForwardRefRenderFunction<HTMLElement, ButtonProps> = (
+const ButtonPure: ForwardRefRenderFunction<unknown, ButtonProps> = (
   props,
   ref
 ) => {

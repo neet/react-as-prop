@@ -1,27 +1,60 @@
 {
   "name": "react-as-prop",
   "packageManager": "yarn@3.2.3",
+  "scripts": {
+    "test": "yarn run test:jest && yarn run test:eslint",
+    "test:jest": "jest --coverage",
+    "test:eslint": "eslint -c .eslintrc.json ./src/**/*.ts",
+    "build": "rollup -c rollup.config.js"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "README.md",
+    "dist",
+    "!**/*.spec.js",
+    "!**/__fixtures/**"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neet/react-as-prop.git"
+  },
+  "bugs": {
+    "url": "https://github.com/neet/react-as-prop/issues"
+  },
+  "homepage": "https://github.com/neet/react-as-prop#readme",
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^22.0.2",
+    "@rollup/plugin-json": "^4.1.0",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/git": "^10.0.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@types/jest": "^29.0.3",
     "@types/react": "^18.0.20",
     "@types/react-dom": "^18.0.6",
+    "jest": "^29.0.3",
     "jest-environment-jsdom": "^29.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "rollup": "^2.79.0",
+    "rollup-plugin-auto-external": "^2.0.0",
+    "rollup-plugin-dts": "^4.2.2",
+    "rollup-plugin-typescript2": "^0.34.0",
+    "semantic-release": "^19.0.5",
+    "ts-jest": "^29.0.1",
     "typescript": "^4.8.3"
   },
   "peerDependencies": {
     "react": "*"
   },
-  "dependencies": {
-    "jest": "^29.0.3",
-    "ts-jest": "^29.0.1"
-  },
   "jest": {
     "preset": "ts-jest",
-    "testEnvironment": "jsdom",
+    "collectCoverageFrom": [
+      "src/**/*.ts",
+      "!**/__fixtures__/**"
+    ],
     "testMatch": [
       "<rootDir>/src/**/*.spec.{ts,tsx}"
     ]

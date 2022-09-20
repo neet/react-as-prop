@@ -23,7 +23,7 @@ export const configure = <K extends string>(propName: K) => {
     D extends ElementType,
     P extends { [propName in K]: ElementType }
   >(
-    forwardRefRenderFunction: ForwardRefRenderFunction<HTMLElement, P>,
+    forwardRefRenderFunction: ForwardRefRenderFunction<unknown, P>,
     fallback: D
   ) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
