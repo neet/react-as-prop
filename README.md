@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/react-as-prop.svg)](https://www.npmjs.com/package/react-as-prop)
 [![CI](https://github.com/neet/react-as-prop/actions/workflows/ci.yml/badge.svg)](https://github.com/neet/react-as-prop/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/neet/react-as-prop/branch/main/graph/badge.svg?token=CZEL31RG9D)](https://codecov.io/gh/neet/react-as-prop)
+[![codecov](https://codecov.io/gh/neet/react-as-prop/branch/main/graph/badge.svg?token=H5D79GDKOM)](https://codecov.io/gh/neet/react-as-prop)
 
 React utility for adding a type-safe `as` prop to make flexible and semantic UI components.
 
