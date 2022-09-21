@@ -57,7 +57,7 @@ const FruitWithRef = forwardRef<HTMLDivElement, FruitProps>(Fruit);
 
 /*-----------------------*/
 
-{
+() => {
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const anchorRef = useRef<HTMLAnchorElement | null>(null);
   const divRef = useRef<HTMLDivElement | null>(null);
@@ -151,9 +151,29 @@ const FruitWithRef = forwardRef<HTMLDivElement, FruitProps>(Fruit);
     {/* @ts-expect-error: Fails with wrong event type */}
     <Switch as={FruitWithRef} color="red" onClick={handleClickDiv}>test</Switch>
   </>;
-}
+};
 
-describe("Button with `as` prop", () => {
+describe("overridable", () => {
+  test("render as tagName", () => {
+    render(
+      <Switch as="a" href="https://example.com">
+        Switch
+      </Switch>
+    );
+    expect(screen.getByRole("link", { name: "Switch" })).not.toBeNull();
+  });
+
+  test("render as custom component", () => {
+    render(
+      <Switch color="red" as={FruitWithRef}>
+        Switch
+      </Switch>
+    );
+    expect(screen.getByText("🍎")).not.toBeNull();
+  });
+});
+
+describe("overridableWithRef", () => {
   test("render as tagName", () => {
     render(
       <Button as="a" href="https://example.com">
