@@ -1,11 +1,11 @@
-import React, {
+import type {
   ElementType,
   FC,
   ForwardedRef,
   ForwardRefRenderFunction,
   ReactNode,
-  useRef,
 } from "react";
+import { useRef, forwardRef } from "react";
 import { render, screen } from "@testing-library/react";
 import { overridable, overridableWithRef } from ".";
 
@@ -42,7 +42,7 @@ const Switch = overridable(_Switch, "button");
 interface FruitProps {
   className?: string;
   color: "red" | "blue";
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 const Fruit = (props: FruitProps, ref?: ForwardedRef<HTMLDivElement>) => {
@@ -53,7 +53,7 @@ const Fruit = (props: FruitProps, ref?: ForwardedRef<HTMLDivElement>) => {
   );
 };
 
-const FruitWithRef = React.forwardRef<HTMLDivElement, FruitProps>(Fruit);
+const FruitWithRef = forwardRef<HTMLDivElement, FruitProps>(Fruit);
 
 /*-----------------------*/
 
@@ -118,7 +118,6 @@ const FruitWithRef = React.forwardRef<HTMLDivElement, FruitProps>(Fruit);
     <Button as={FruitWithRef} color="red" onClick={handleClickDiv}>test</Button>
   </>;
 
-
   // prettier-ignore
   // eslint-disable-next-line
   <>
@@ -152,7 +151,7 @@ const FruitWithRef = React.forwardRef<HTMLDivElement, FruitProps>(Fruit);
     {/* @ts-expect-error: Fails with wrong event type */}
     <Switch as={FruitWithRef} color="red" onClick={handleClickDiv}>test</Switch>
   </>;
-};
+}
 
 describe("Button with `as` prop", () => {
   test("render as tagName", () => {
