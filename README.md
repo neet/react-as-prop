@@ -1,8 +1,8 @@
 # react-as-prop
 
-React utility for adding a type-safe `as-prop` to make flexible and semantic UI components.
+React utility for adding a type-safe `as` prop to make flexible and semantic UI components.
 
-Inspired by styled-component's `as` prop and Material UI's `component` prop.
+Inspired by [styled-component's `as` prop](https://styled-components.com/docs/basics#extending-styles) and [Material UI's `component` prop](https://mui.com/material-ui/guides/composition/#component-prop).
 
 ## Install
 
@@ -12,7 +12,7 @@ yarn add react-as-prop
 
 ## Usage
 
-### `withOverride(component: FC, fallback: ElementType): FC`
+### `overridable(component: FC, fallback: ElementType): FC`
 
 Adds `as` prop to the component specified in the argument.
 
@@ -22,10 +22,10 @@ Adds `as` prop to the component specified in the argument.
 Here is an example of your component definition.
 
 ```tsx
-import { withOverride } from "react-as-prop";
+import { overridable } from "react-as-prop";
 
 interface InternalButtonProps {
-  // ⚠NOTE: This prop is always needed
+  // ⚠️ NOTE: This prop is always needed
   as: ElementType;
   size: "small" | "large";
   children?: ReactNode;
@@ -43,7 +43,7 @@ const InternalButton: FC<InternalButtonProps> = (props) => {
 };
 
 // It is recommended to export only this part
-export const Button = withOverride(Button, "button");
+export const Button = overridable(Button, "button");
 export type ButtonProps = ComponentProps<typeof Button>;
 ```
 
@@ -54,9 +54,9 @@ Now then, it can be override with any other component
 <Button as={PinkButton} />
 ```
 
-### `forwardRefWithOverride(fn: ForwardRefRenderFunction, fallback: ElementType): FC`
+### `overridableWithRef(fn: ForwardRefRenderFunction, fallback: ElementType): FC`
 
-Almost same as `withOverride`, but also supports type-safe `forwardRef`.
+Almost same as `overridable`, but also supports type-safe `forwardRef`.
 
 - `fn` ― A function that accepts `props` and `forwardedRef`
 - `fallback` ─ Default element, such as `button` or `div`
@@ -64,7 +64,7 @@ Almost same as `withOverride`, but also supports type-safe `forwardRef`.
 Here is an example of your component definition.
 
 ```tsx
-import { forwardRefWithOverride } from "react-as-prop";
+import { overridableWithRef } from "react-as-prop";
 
 interface InternalButtonProps {
   as: ElementType;
@@ -90,7 +90,7 @@ const InternalButton: ForwardRefRenderFunction<
   );
 };
 
-export const Button = forwardRefWithOverride(Button, "button");
+export const Button = overridableWithRef(Button, "button");
 export type ButtonProps = ComponentProps<typeof Button>;
 ```
 
@@ -101,4 +101,16 @@ const ref = useRef<HTMLAnchorElement | null>(null);
 <Button as="a" href="/" ref={ref} />;
 ```
 
-### `configure(propName: string): `
+### `configure(propName: string): ConfigureResult`
+
+A factory function that returns `override` and `overridableWithRef` with customized name for `as` prop.
+
+```tsx
+import { configure } from "react-as-prop";
+
+// Use "kind" for as-prop
+const { overridable } = configure("kind");
+
+const Button = overridable(InternalButton, "button");
+<Button kind="a" href="/" />;
+```

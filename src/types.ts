@@ -1,4 +1,4 @@
-import {
+import type {
   ComponentPropsWithoutRef,
   ComponentPropsWithRef,
   ElementRef,
@@ -7,10 +7,10 @@ import {
   RefAttributes,
 } from "react";
 
-/**
- * A utility type that accepts ElementType and props and returns props along with
- * `as` and other IntrinsicElements. Inspired by OverrideProps from Material UI
- */
+export type OverrideProp<K extends string> = {
+  readonly [propName in K]: ElementType;
+};
+
 // prettier-ignore
 export type OverrideProps<T extends ElementType, P, K extends string> = (
   & { [key in K]: T }
@@ -18,26 +18,18 @@ export type OverrideProps<T extends ElementType, P, K extends string> = (
   & P
 );
 
-/**
- * OverrideProps with { ref?: Element }. By casting forwardRef() to this type enables `ref` prop
- */
 export type OverridePropsWithRef<
   T extends ElementType,
   P,
   K extends string
 > = OverrideProps<T, P, K> & RefAttributes<ElementRef<T>>;
 
-/**
- * Functional Component with `as` support
- * @params D Default ElementType
- * @params U Props Types
- * @params K Prop name used for `as`
- */
+// prettier-ignore
 export type OverridableComponentType<
   D extends ElementType,
   P,
   K extends string
 > = {
-  <T extends ElementType>(props: OverridePropsWithRef<T, P, K>): ReactElement;
-  (props: ComponentPropsWithRef<D> & Omit<P, K>): ReactElement;
+  <T extends ElementType>(props: OverridePropsWithRef<T, P, K>): ReactElement | null;
+  (props: ComponentPropsWithRef<D> & Omit<P, K>): ReactElement | null;
 };

@@ -1,105 +1,175 @@
-import {
-  createRef,
+import React, {
   ElementType,
   FC,
+  ForwardedRef,
   ForwardRefRenderFunction,
   ReactNode,
+  useRef,
 } from "react";
 import { render, screen } from "@testing-library/react";
 import { overridable, overridableWithRef } from ".";
 
-/*----------------*/
+/*-----------------------*/
 
 interface ButtonProps {
   as: ElementType;
-  className?: string;
   children?: ReactNode;
 }
 
-const ButtonPure: ForwardRefRenderFunction<unknown, ButtonProps> = (
-  props,
-  ref
-) => {
-  const { as: As, className, children, ...rest } = props;
-
-  return (
-    <As className={className} ref={ref} {...rest}>
-      {children}
-    </As>
-  );
+const _Button: ForwardRefRenderFunction<unknown, ButtonProps> = (props) => {
+  const { as: As, children, ...rest } = props;
+  return <As {...rest}>{children}</As>;
 };
 
-/*----------------*/
+const Button = overridableWithRef(_Button, "button");
 
-interface PinkButtonProps {
-  className?: string;
+/*-----------------------*/
+
+interface SwitchProps {
+  as: ElementType;
   children?: ReactNode;
-  onClick?: () => void;
 }
 
-const PinkButton: FC<PinkButtonProps> = (props) => {
-  const { className, children, onClick } = props;
+const _Switch: FC<SwitchProps> = (props) => {
+  const { as: As, children, ...rest } = props;
+  return <As {...rest}>{children}</As>;
+};
 
+const Switch = overridable(_Switch, "button");
+
+/*-----------------------*/
+
+interface FruitProps {
+  className?: string;
+  color: "red" | "blue";
+  children: React.ReactNode;
+}
+
+const Fruit = (props: FruitProps, ref?: ForwardedRef<HTMLDivElement>) => {
   return (
-    <button
-      className={className}
-      style={{ backgroundColor: "pink" }}
-      onClick={onClick}
-    >
-      {children}
-    </button>
+    <div className={props.className} style={{ color: props.color }} ref={ref}>
+      🍎
+    </div>
   );
 };
 
-/*----------------*/
+const FruitWithRef = React.forwardRef<HTMLDivElement, FruitProps>(Fruit);
 
-describe("configure", () => {
-  test("overridable", () => {
-    const Button = overridable(ButtonPure, "button");
-    const fn = jest.fn();
+/*-----------------------*/
 
+{
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const anchorRef = useRef<HTMLAnchorElement | null>(null);
+  const divRef = useRef<HTMLDivElement | null>(null);
+
+  const handleClickButton = (_e: React.MouseEvent<HTMLButtonElement>) => {
+    /* noop */
+  };
+
+  const handleClickAnchor = (_e: React.MouseEvent<HTMLAnchorElement>) => {
+    /* noop */
+  };
+
+  const handleClickDiv = (_e: React.MouseEvent<HTMLDivElement>) => {
+    /* noop */
+  };
+
+  // prettier-ignore
+  // eslint-disable-next-line
+  <>
+    <Button aria-label="my button">test</Button>
+    <Button onClick={handleClickButton}>test</Button>
+    <Button ref={buttonRef}>test</Button>
+    {/* @ts-expect-error: Fails with wrong prop type */}
+    <Button href="https://example.com">test</Button>
+    {/* @ts-expect-error: Fails with wrong ref type */}
+    <Button ref={anchorRef}>test</Button>
+    {/* @ts-expect-error: Fails with wrong event handler type*/}
+    <Button onClick={handleClickAnchor}>test</Button>
+
+    {/* as={keyof IntrinsicElements} */}
+    <Button as="a" href="https://example.com">test</Button>
+    <Button as="a" href="https://example.com" ref={anchorRef}>test</Button>
+    <Button as="a" ref={anchorRef} onClick={handleClickAnchor}>test</Button>
+    {/* @ts-expect-error: Fails with wrong prop type */}
+    <Button as="a" href={123}>test</Button>
+    {/* @ts-expect-error: Fails with wrong ref type */}
+    <Button as="a" ref={divRef}>test</Button>
+    {/* @ts-expect-error: Fails with wrong event handler type*/}
+    <Button as="a" onClick={handleClickDiv}>test</Button>
+
+    {/* as={ComponentType} */}
+    <Button as={Fruit} color="red">test</Button>
+    {/* @ts-expect-error: Fails with wrong prop type */}
+    <Button as={Fruit} color={123}>test</Button>
+    {/* @ts-expect-error: Fails with wrong ref type */}
+    <Button as={Fruit} color="red" ref={divRef}>test</Button>
+    {/* @ts-expect-error: Fails with wrong event type */}
+    <Button as={Fruit} color="red" onClick={handleClickDiv}>test</Button>
+
+    {/* as={ComponentTypeWithRef} */}
+    <Button as={FruitWithRef} color="red">test</Button>
+    <Button as={FruitWithRef} color="red" ref={divRef}>test</Button>
+    {/* @ts-expect-error: Fails with wrong prop type */}
+    <Button as={FruitWithRef} color={123}>test</Button>
+    {/* @ts-expect-error: Fails with wrong ref type */}
+    <Button as={FruitWithRef} color="red" ref={anchorRef}>test</Button>
+    {/* @ts-expect-error: Fails with wrong event type */}
+    <Button as={FruitWithRef} color="red" onClick={handleClickDiv}>test</Button>
+  </>;
+
+
+  // prettier-ignore
+  // eslint-disable-next-line
+  <>
+    <Switch aria-label="my Switch">test</Switch>
+    <Switch onClick={handleClickButton}>test</Switch>
+    {/* @ts-expect-error: Fails with wrong prop type */}
+    <Switch href="https://example.com">test</Switch>
+    {/* @ts-expect-error: Fails with wrong event handler type*/}
+    <Switch onClick={handleClickAnchor}>test</Switch>
+
+    {/* as={keyof IntrinsicElements} */}
+    <Switch as="a" href="https://example.com">test</Switch>
+    <Switch as="a" href="https://example.com" ref={anchorRef}>test</Switch>
+    {/* @ts-expect-error: Fails with wrong prop type */}
+    <Switch as="a" href={123}>test</Switch>
+    {/* @ts-expect-error: Fails with wrong event handler type*/}
+    <Switch as="a" onClick={handleClickDiv}>test</Switch>
+
+    {/* as={ComponentType} */}
+    <Switch as={Fruit} color="red">test</Switch>
+    {/* @ts-expect-error: Fails with wrong prop type */}
+    <Switch as={Fruit} color={123}>test</Switch>
+    {/* @ts-expect-error: Fails with wrong event type */}
+    <Switch as={Fruit} color="red" onClick={handleClickDiv}>test</Switch>
+
+    {/* as={ComponentTypeWithRef} */}
+    <Switch as={FruitWithRef} color="red">test</Switch>
+    <Switch as={FruitWithRef} color="red" ref={divRef}>test</Switch>
+    {/* @ts-expect-error: Fails with wrong prop type */}
+    <Switch as={FruitWithRef} color={123}>test</Switch>
+    {/* @ts-expect-error: Fails with wrong event type */}
+    <Switch as={FruitWithRef} color="red" onClick={handleClickDiv}>test</Switch>
+  </>;
+};
+
+describe("Button with `as` prop", () => {
+  test("render as tagName", () => {
     render(
-      <Button as="a" href="/" onClick={fn}>
-        Click me
+      <Button as="a" href="https://example.com">
+        Button
       </Button>
     );
-
-    screen.getByRole("link", { name: /Click me/ }).click();
-
-    expect(fn).toBeCalled();
+    expect(screen.getByRole("link", { name: "Button" })).not.toBeNull();
   });
 
-  test("override with another component", () => {
-    const Button = overridable(ButtonPure, "button");
-
-    const fn = jest.fn();
-
+  test("render as custom component", () => {
     render(
-      <Button as={PinkButton} onClick={fn}>
-        Click me
+      <Button color="red" as={FruitWithRef}>
+        Button
       </Button>
     );
-
-    screen.getByRole("button", { name: /Click me/ }).click();
-
-    expect(fn).toBeCalled();
-  });
-
-  test("overridableWithRef", () => {
-    const Button = overridableWithRef(ButtonPure, "button");
-    const fn = jest.fn();
-    const ref = createRef<HTMLAnchorElement>();
-
-    render(
-      <Button as="a" href="/" onClick={fn} ref={ref}>
-        Click me
-      </Button>
-    );
-
-    const link = screen.getByRole("link", { name: /Click me/ });
-    link.click();
-
-    expect(fn).toBeCalled();
-    expect(ref.current).toBe(link);
+    expect(screen.getByText("🍎")).not.toBeNull();
   });
 });

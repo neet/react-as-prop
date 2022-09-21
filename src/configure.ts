@@ -4,11 +4,11 @@ import type {
   FunctionComponent,
 } from "react";
 import { forwardRef } from "react";
-import type { OverridableComponentType } from "./types";
+import type { OverrideProp, OverridableComponentType } from "./types";
 
 export type OverridableFn<K extends string> = <
   D extends ElementType,
-  P extends { [propName in K]: ElementType }
+  P extends OverrideProp<K>
 >(
   component: FunctionComponent<P>,
   fallback: D
@@ -16,7 +16,7 @@ export type OverridableFn<K extends string> = <
 
 export type OverridableWithRefFn<K extends string> = <
   D extends ElementType,
-  P extends { [propName in K]: ElementType }
+  P extends OverrideProp<K>
 >(
   forwardRefRenderFunction: ForwardRefRenderFunction<unknown, P>,
   fallback: D
@@ -30,29 +30,19 @@ export type ConfigureResult<K extends string> = {
 export const configure = <K extends string>(
   propName: K
 ): ConfigureResult<K> => {
-  const overridable: OverridableFn<K> = <
-    D extends ElementType,
-    P extends { [propName in K]: ElementType }
-  >(
-    component: FunctionComponent<P>,
-    fallback: D
-  ) => {
-    return function Overridable(props: P) {
+  const overridable: OverridableFn<K> = (component, fallback) => {
+    return function Overridable(props: any) {
       return component({ [propName]: fallback, ...props });
-    } as OverridableComponentType<D, P, K>;
+    };
   };
 
-  const overridableWithRef: OverridableWithRefFn<K> = <
-    D extends ElementType,
-    P extends { [propName in K]: ElementType }
-  >(
-    forwardRefRenderFunction: ForwardRefRenderFunction<unknown, P>,
-    fallback: D
+  const overridableWithRef: OverridableWithRefFn<K> = (
+    forwardRefRenderFunction,
+    fallback
   ) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return forwardRef<any, any>(function ForwardRefWithOverride(props, ref) {
       return forwardRefRenderFunction({ [propName]: fallback, ...props }, ref);
-    }) as OverridableComponentType<D, P, K>;
+    });
   };
 
   return { overridable, overridableWithRef };
