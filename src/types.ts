@@ -14,7 +14,7 @@ export type OverrideProp<K extends string> = {
 // prettier-ignore
 export type OverrideProps<T extends ElementType, P, K extends string> = (
   & { [key in K]: T }
-  & Omit<ComponentPropsWithoutRef<T>, keyof RefAttributes<T>>
+  & Omit<ComponentPropsWithoutRef<T>, keyof P>
   & P
 );
 
