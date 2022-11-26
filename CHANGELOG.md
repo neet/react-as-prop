@@ -1,3 +1,11 @@
+## [1.0.2](https://github.com/neet/react-as-prop/compare/v1.0.1...v1.0.2) (2022-11-26)
+
+
+### Bug Fixes
+
+* Fix build command ([a68c7e8](https://github.com/neet/react-as-prop/commit/a68c7e859c0b508cf0f29b8887953e41a8a22918))
+* Omit duplicated props from overriden element ([a3cea34](https://github.com/neet/react-as-prop/commit/a3cea34754de05843d274ca54b819661c9352196))
+
 ## [1.0.1](https://github.com/neet/react-as-prop/compare/v1.0.0...v1.0.1) (2022-09-22)
 
 # 1.0.0 (2022-09-21)
