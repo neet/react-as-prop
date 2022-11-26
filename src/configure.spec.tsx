@@ -57,6 +57,19 @@ const FruitWithRef = forwardRef<HTMLDivElement, FruitProps>(Fruit);
 
 /*-----------------------*/
 
+interface TextFieldProps {
+  as: ElementType;
+  size: "md" | "lg";
+}
+
+const _TextField = (props: TextFieldProps) => {
+  const { as: Component, size } = props;
+  return <Component className={`size-${size}`} />;
+};
+const TextField = overridable(_TextField, "input");
+
+/*-----------------------*/
+
 () => {
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const anchorRef = useRef<HTMLAnchorElement | null>(null);
@@ -150,6 +163,12 @@ const FruitWithRef = forwardRef<HTMLDivElement, FruitProps>(Fruit);
     <Switch as={FruitWithRef} color={123}>test</Switch>
     {/* @ts-expect-error: Fails with wrong event type */}
     <Switch as={FruitWithRef} color="red" onClick={handleClickDiv}>test</Switch>
+  </>;
+
+  <>
+    <TextField as="input" size="lg" />
+    {/* @ts-expect-error: Cannot pass a number */}
+    <TextField as="input" size={123} />
   </>;
 };
 
