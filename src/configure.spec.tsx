@@ -1,74 +1,10 @@
-import type {
-  ElementType,
-  FC,
-  ForwardedRef,
-  ForwardRefRenderFunction,
-  ReactNode,
-} from "react";
-import { useRef, forwardRef } from "react";
+import { useRef } from "react";
 import { render, screen } from "@testing-library/react";
-import { overridable, overridableWithRef } from ".";
-
-/*-----------------------*/
-
-interface ButtonProps {
-  as: ElementType;
-  children?: ReactNode;
-}
-
-const _Button: ForwardRefRenderFunction<unknown, ButtonProps> = (props) => {
-  const { as: As, children, ...rest } = props;
-  return <As {...rest}>{children}</As>;
-};
-
-const Button = overridableWithRef(_Button, "button");
-
-/*-----------------------*/
-
-interface SwitchProps {
-  as: ElementType;
-  children?: ReactNode;
-}
-
-const _Switch: FC<SwitchProps> = (props) => {
-  const { as: As, children, ...rest } = props;
-  return <As {...rest}>{children}</As>;
-};
-
-const Switch = overridable(_Switch, "button");
-
-/*-----------------------*/
-
-interface FruitProps {
-  className?: string;
-  color: "red" | "blue";
-  children: ReactNode;
-}
-
-const Fruit = (props: FruitProps, ref?: ForwardedRef<HTMLDivElement>) => {
-  return (
-    <div className={props.className} style={{ color: props.color }} ref={ref}>
-      🍎
-    </div>
-  );
-};
-
-const FruitWithRef = forwardRef<HTMLDivElement, FruitProps>(Fruit);
-
-/*-----------------------*/
-
-interface TextFieldProps {
-  as: ElementType;
-  size: "md" | "lg";
-}
-
-const _TextField = (props: TextFieldProps) => {
-  const { as: Component, size } = props;
-  return <Component className={`size-${size}`} />;
-};
-const TextField = overridable(_TextField, "input");
-
-/*-----------------------*/
+import { Button } from "./__fixtures__/Button";
+import { Fruit, FruitWithRef } from "./__fixtures__/Fruit";
+import { Switch } from "./__fixtures__/Switch";
+import { TextField } from "./__fixtures__/TextField";
+import { TextFieldWithRef } from "./__fixtures__/TextFieldWithRef";
 
 () => {
   const buttonRef = useRef<HTMLButtonElement | null>(null);
@@ -88,7 +24,6 @@ const TextField = overridable(_TextField, "input");
   };
 
   // prettier-ignore
-  // eslint-disable-next-line
   <>
     <Button aria-label="my button">test</Button>
     <Button onClick={handleClickButton}>test</Button>
@@ -169,6 +104,12 @@ const TextField = overridable(_TextField, "input");
     <TextField as="input" size="lg" />
     {/* @ts-expect-error: Cannot pass a number */}
     <TextField as="input" size={123} />
+  </>;
+
+  <>
+    <TextFieldWithRef as="input" size="lg" />
+    {/* @ts-expect-error: Cannot pass a number */}
+    <TextFieldWithRef as="input" size={123} />
   </>;
 };
 
