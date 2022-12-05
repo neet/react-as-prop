@@ -4,6 +4,8 @@
 [![CI](https://github.com/neet/react-as-prop/actions/workflows/ci.yml/badge.svg)](https://github.com/neet/react-as-prop/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/neet/react-as-prop/branch/main/graph/badge.svg?token=H5D79GDKOM)](https://codecov.io/gh/neet/react-as-prop)
 
+![Thumbnail](https://github.com/neet/react-as-prop/blob/main/assets/react-as-prop.png)
+
 Type-safe React utility that adds an ad-hoc prop for switching which HTML element to render, for developing flexible and semantic UI components.
 
 Inspired by [styled-component's `as` prop](https://styled-components.com/docs/basics#extending-styles) and [Material UI's `component` prop](https://mui.com/material-ui/guides/composition/#component-prop).
