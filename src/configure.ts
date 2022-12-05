@@ -1,26 +1,5 @@
-import type {
-  ElementType,
-  ForwardRefRenderFunction,
-  FunctionComponent,
-} from "react";
 import { forwardRef } from "react";
-import type { OverrideProp, OverridableComponentType } from "./types";
-
-export type OverridableFn<K extends string> = <
-  D extends ElementType,
-  P extends OverrideProp<K>
->(
-  component: FunctionComponent<P>,
-  fallback: D
-) => OverridableComponentType<D, P, K>;
-
-export type OverridableWithRefFn<K extends string> = <
-  D extends ElementType,
-  P extends OverrideProp<K>
->(
-  forwardRefRenderFunction: ForwardRefRenderFunction<unknown, P>,
-  fallback: D
-) => OverridableComponentType<D, P, K>;
+import { OverridableFn, OverridableWithRefFn } from "./types";
 
 export type ConfigureResult<K extends string> = {
   overridable: OverridableFn<K>;

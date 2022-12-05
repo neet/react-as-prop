@@ -78,6 +78,7 @@ import { TextFieldWithRef } from "./__fixtures__/TextFieldWithRef";
 
     {/* as={keyof IntrinsicElements} */}
     <Switch as="a" href="https://example.com">test</Switch>
+    {/* TODO: We should reject this call */}
     <Switch as="a" href="https://example.com" ref={anchorRef}>test</Switch>
     {/* @ts-expect-error: Fails with wrong prop type */}
     <Switch as="a" href={123}>test</Switch>
@@ -101,12 +102,14 @@ import { TextFieldWithRef } from "./__fixtures__/TextFieldWithRef";
   </>;
 
   <>
+    <TextField size="lg" />
     <TextField as="input" size="lg" />
     {/* @ts-expect-error: Cannot pass a number */}
     <TextField as="input" size={123} />
   </>;
 
   <>
+    <TextFieldWithRef size="lg" />
     <TextFieldWithRef as="input" size="lg" />
     {/* @ts-expect-error: Cannot pass a number */}
     <TextFieldWithRef as="input" size={123} />
