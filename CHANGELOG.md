@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/neet/react-as-prop/compare/v1.0.2...v1.0.3) (2022-12-05)
+
+
+### Bug Fixes
+
+* Fix handling of conflict between user-defined props and default props ([e841ae1](https://github.com/neet/react-as-prop/commit/e841ae1a48d57624b0190bb1fe1cae379b8ada7e))
+
 ## [1.0.2](https://github.com/neet/react-as-prop/compare/v1.0.1...v1.0.2) (2022-11-26)
 
 
